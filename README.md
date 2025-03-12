@@ -90,6 +90,7 @@ Command:
 pm2 start <server_file_name> --name <project_name_shown_in_PM2_list>
 ```
 Example: `pm2 start server.js --name labmantra`  
+Next js Example: `pm2 start npm --name next-app -- start`  
 To see all the pm2 server lists: 
 ```bash
 pm2 ls
@@ -296,3 +297,28 @@ Restart the System
 ```bash
 sudo systemctl restart nginx
 ```
+
+
+
+
+# Nextjs same like flow Live Backend
+
+Server start before create main folder
+nano ecosystem.config.js
+
+
+module.exports = {
+  apps: [
+    {
+      name: "projectname",
+      script: "npm",
+      args: "start",
+      cwd: "/root/projectrootname",
+      env: {
+        NODE_ENV: "production",
+      },
+    },
+  ],
+};
+
+than start your server ya fllow Live Backend on VPS step no 6
