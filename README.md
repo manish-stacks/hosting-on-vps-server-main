@@ -304,12 +304,11 @@ sudo systemctl restart nginx
 # Nextjs same like flow Live Backend
 
 Server start before create main folder
-`
-``
+```
 bashnano ecosystem.config.js
 ```
 
-```bash
+```
 module.exports = {
   apps: [
     {
