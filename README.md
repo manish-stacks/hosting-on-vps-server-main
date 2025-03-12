@@ -304,9 +304,12 @@ sudo systemctl restart nginx
 # Nextjs same like flow Live Backend
 
 Server start before create main folder
-nano ecosystem.config.js
+`
+``
+bashnano ecosystem.config.js
+```
 
-
+```bash
 module.exports = {
   apps: [
     {
@@ -320,5 +323,5 @@ module.exports = {
     },
   ],
 };
-
+```
 than start your server ya fllow Live Backend on VPS step no 6
