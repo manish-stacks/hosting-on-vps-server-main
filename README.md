@@ -305,7 +305,7 @@ sudo systemctl restart nginx
 
 Server start before create main folder
 ```
-bashnano ecosystem.config.js
+nano ecosystem.config.js
 ```
 
 ```
