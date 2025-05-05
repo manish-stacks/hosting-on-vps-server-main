@@ -303,6 +303,10 @@ sudo systemctl restart nginx
 in nextjs
 pm2 start npm --name transpeed -- run start
 
+if need to port add 
+PORT=4000 pm2 start npm --name transpeed -- run start
+
+
 
 pm2 save
 pm2 startup
