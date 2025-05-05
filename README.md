@@ -299,7 +299,14 @@ sudo systemctl restart nginx
 ```
 
 
+```
+pm2 start app.js --name projectname
+```
 
+
+```
+sudo ufw allow port
+````
 
 # Nextjs same like flow Live Backend
 
