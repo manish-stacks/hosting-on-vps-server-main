@@ -300,6 +300,10 @@ sudo systemctl restart nginx
 
 
 ```
+in nextjs
+pm2 start npm --name transpeed -- run start
+
+in reactjs
 pm2 start app.js --name projectname
 ```
 
