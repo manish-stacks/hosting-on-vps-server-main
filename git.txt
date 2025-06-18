@@ -1,0 +1,62 @@
+🔧 Step 1: New SSH Key generate karo
+Terminal (Git Bash) mein ye command run karo:
+
+ssh-keygen -t ed25519 -C "codewithhbs@gmail.com"
+
+Enter a file in which to save the key (/c/Users/shiva/.ssh/id_ed25519): 
+→ Enter press kar do (default path accept karo)
+
+Enter passphrase (empty for no passphrase): 
+→ Blank chhodo ya koi passphrase daal do (optional)
+
+
+Step 2: SSH key dekh ke copy karo
+cat ~/.ssh/id_ed25519.pub
+
+
+→ Is pura string ko copy karo (starting from ssh-ed25519 till end)
+
+
+
+Step 3: GitHub mein SSH key paste karo
+Jaao GitHub pe → Settings → SSH and GPG Keys
+
+Click “New SSH key”
+
+Title: My Laptop Key (ya jo bhi naam chaho)
+
+Key: Paste jo copy kiya
+
+Click “Add SSH Key”
+
+
+
+
+ Step 4: Test SSH connection (optional but useful)
+bash
+Copy
+Edit
+ssh -T git@github.com
+
+
+
+
+
+Step-by-Step Commands to Copy Repo via SSH
+🧩 Step 1: Clone original repo
+git clone git@github.com:manish-stacks/beveromatic.git
+cd beveromatic
+
+Step 2: Remove old remote
+git remote remove origin
+
+
+Step 3: Add new remote (Account 2 SSH URL)
+git remote add origin git@github.com:codewithhbs/beveromatic.git
+
+
+tep 4: Push code to new repo
+git push -u origin 
+
+⚠️ Note: Agar tumhari branch master hai instead of main, toh main ki jagah master likhna:
+git push -u origin master
