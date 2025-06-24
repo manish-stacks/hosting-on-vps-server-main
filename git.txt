@@ -32,10 +32,7 @@ Click “Add SSH Key”
 
 
 
- Step 4: Test SSH connection (optional but useful)
-bash
-Copy
-Edit
+Step 4: Test SSH connection (optional but useful)
 ssh -T git@github.com
 
 
