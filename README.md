@@ -345,3 +345,59 @@ module.exports = {
 };
 ```
 than start your server ya fllow Live Backend on VPS step no 6
+
+
+```
+server {
+    listen 80;
+    server_name drkm.admin.adsdigitalmedia.com www.drkm.admin.adsdigitalmedia.com;
+
+    location / {
+        proxy_pass http://localhost:3006;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+//ecosystem.config.js
+```
+module.exports = {
+  apps: [
+    {
+      name: "dr-rajneesh",
+      script: "npm",
+      args: "start",
+      cwd: "/root/dr-rajneesh/client",
+      env: {
+        NODE_ENV: "production",
+      },
+    },
+  ],
+};
+```
+//download file
+```
+scp root@82.112.236.65:/root/dr.rkm/admin/.env C:\Users\shiva\Downloads\.env
+```
+```
+pm2 start npm --name "dr-rajneesh-admin" -- start  //next
+pm2 start server.js --name "dr-rajneesh-server" //react 
+pm2 save
+```
+```
+sudo systemctl reload nginx
+```
+```
+sudo certbot --nginx -d dyfru.com -d www.dyfru.com
+```
+```
+sudo certbot --nginx \
+-d drkm.admin.adsdigitalmedia.com -d www.drkm.admin.adsdigitalmedia.com \
+-d drkm.adsdigitalmedia.com -d www.drkm.adsdigitalmedia.com \
+-d drkm.api.adsdigitalmedia.com -d www.drkm.api.adsdigitalmedia.com 
+
+```
+
