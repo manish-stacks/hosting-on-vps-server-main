@@ -4,32 +4,18 @@ Expo now uses EAS Build to generate APK files, replacing the old expo build:andr
 ✅ Step 1: Install EAS CLI
 Run the following command in your project directory:
 
-sh
-Copy
-Edit
 npm install -g eas-cli
 ✅ Step 2: Login to Expo
 Make sure you are logged into Expo:
 
-sh
-Copy
-Edit
 eas login
 ✅ Step 3: Configure EAS Build
 Run:
-
-sh
-Copy
-Edit
 eas build:configure
 This will create an eas.json file where build settings are stored.
 
 ✅ Step 4: Build APK
 Run:
-
-sh
-Copy
-Edit
 eas build -p android --profile preview
 The preview profile creates an APK file (good for testing).
 
