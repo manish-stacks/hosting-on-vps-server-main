@@ -1,0 +1,34 @@
+1. Bundletool Download karo
+
+Bundletool GitHub Releases
+ se latest bundletool-all-x.x.x.jar download.
+
+2. Java Install Hona Chahiye
+
+Aapke system me Java 8+ installed hona chahiye.
+
+Check karne ke liye:
+
+java -version
+
+3. .aab se .apks Generate karo
+
+Terminal ya CMD me run karo:
+
+java -jar bundletool-all-1.15.6.jar build-apks --bundle=app-release.aab --output=app.apks --mode=universal
+
+4. .apks ko Extract karo
+
+.apks actually ek ZIP hoti hai. Rename karke unzip karo:
+
+mv app.apks app.zip
+unzip app.zip -d output_folder
+
+5. APK Install Karna (Optional)
+
+Direct device me install karne ke liye:
+
+adb install output_folder/universal.apk
+👉 Simple tarike se bole to:
+
+.aab → bundletool → .apks → universal.apk
