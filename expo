@@ -23,3 +23,8 @@ If you want an AAB file for Play Store, use --profile production.
 
 ✅ Step 5: Download the APK
 Once the build is completed, Expo will provide a link to download your APK.  
+
+
+
+update app
+eas update --branch production -p android
