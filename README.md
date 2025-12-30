@@ -16,7 +16,7 @@
 3. Install Node.js and NVM:
     ```bash
     apt install nodejs
-    nvm install --lts
+    sudo apt install npm
     node -v
     ```
 
