@@ -1,111 +1,215 @@
-# Hosting on VPS Server
+# 🚀 VPS Server Hosting Guide (Node.js / Next.js / React)
 
-## Setup Hosting
+This guide explains how to deploy **Backend and Frontend applications on a VPS server** using:
 
-1. Update and upgrade the system:
-    ```bash
-    sudo apt update
-    sudo apt upgrade
-    ```
+- Node.js
+- PM2
+- Nginx
+- SSL (Certbot)
 
-2. Install Node Version Manager (NVM):
-    ```bash
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-    ```
+---
 
-3. Install Node.js and NVM:
-    ```bash
-    apt install nodejs
-    sudo apt install npm
-    node -v
-    ```
+# ⚙️ Initial VPS Setup
 
-4. Install Git and GitHub CLI:
-    ```bash
-    sudo apt install git
-    sudo apt install gh
-    gh auth login
-    ```
-
-5. Install global npm packages:
-    ```bash
-    npm i -g pnpm  # For installing modules in node
-    npm i -g pm2   # To run our server 24x7
-    ```
-
-6. Install Nginx and Certbot:
-    ```bash
-    sudo apt install nginx
-    sudo apt-get install certbot python3-certbot-nginx  # For requesting the SSL Certificate
-    ```
-
-### Reminder
-
-After every new download, please run the following commands:
+## Step 1: Update System
 ```bash
 sudo apt update
 sudo apt upgrade
 ```
 
+---
 
+## Step 2: Install Node Version Manager (NVM)
 
-
-
-# Live Backend on VPS
-
-### Firstly, Please remember to add the root in domain DNS for `api` and `www.api`.
-
-### Step 1:
-Command: 
 ```bash
-git clone <git repo Link>
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 ```
-Example: `git clone https://github.com/HARSH-VARDHAN-MISHRA/Laboratory.git`
 
-### Step 2:
-Go to server file folder and download the node modules.  
-Command: 
+---
+
+## Step 3: Install Node.js and NPM
+
+```bash
+apt install nodejs
+sudo apt install npm
+
+node -v
+npm -v
+```
+
+---
+
+## Step 4: Install Git and GitHub CLI
+
+```bash
+sudo apt install git
+sudo apt install gh
+
+gh auth login
+```
+
+---
+
+## Step 5: Install Global Packages
+
+```bash
+npm i -g pnpm
+npm i -g pm2
+```
+
+- **pnpm** → install node modules
+- **pm2** → run server 24x7
+
+---
+
+## Step 6: Install Nginx and Certbot
+
+```bash
+sudo apt install nginx
+sudo apt-get install certbot python3-certbot-nginx
+```
+
+---
+
+## ⚠️ Reminder
+
+After installing new software always run:
+
+```bash
+sudo apt update
+sudo apt upgrade
+```
+
+---
+
+# 🌐 Live Backend on VPS
+
+### ⚠️ Important
+Add DNS records for:
+
+```
+api.DOMAIN_NAME
+www.api.DOMAIN_NAME
+```
+
+---
+
+# Step 1: Clone Repository
+
+```bash
+git clone <git repo link>
+```
+
+Example:
+
+```bash
+git clone https://github.com/HARSH-VARDHAN-MISHRA/Laboratory.git
+```
+
+---
+
+# Step 2: Install Dependencies
+
 ```bash
 pnpm install
 ```
 
-### Step 3:
-Add the `.env` file:
-- Command: `nano .env` (nano command is used to create a file)
-- Now add the file content then:
-  - `Ctrl + O`
-  - `Enter`
-  - `Ctrl + X` (To return back)
-- If you want to see the changes, then use the command: `cat <file_name>`
-- Reminder: Please change the PORT number and remember it for adding further in the `.conf` file.
+---
 
-### Step 4:
-Run the command to check if the server is running: `node <server_file_name>`  
-Example: `node server.js`
+# Step 3: Create `.env` File
 
-### Step 5:
-Add the server to the pm2 list.  
-Command: 
 ```bash
-pm2 start <server_file_name> --name <project_name_shown_in_PM2_list>
+nano .env
 ```
-Example: `pm2 start server.js --name labmantra`  
-Next js Example: `pm2 start npm --name next-app -- start`  
-To see all the pm2 server lists: 
+
+Save file:
+
+```
+Ctrl + O
+Enter
+Ctrl + X
+```
+
+Check file:
+
+```bash
+cat .env
+```
+
+⚠️ Remember the **PORT number** (used in nginx config).
+
+---
+
+# Step 4: Run Server (Test)
+
+```bash
+node <server_file_name>
+```
+
+Example
+
+```bash
+node server.js
+```
+
+---
+
+# Step 5: Run Server using PM2
+
+```bash
+pm2 start <server_file_name> --name <project_name>
+```
+
+Example
+
+```bash
+pm2 start server.js --name labmantra
+```
+
+### NestJS Example
+
+```bash
+pm2 start dist/main.js --name nest-appointment
+```
+
+### Next.js Example
+
+```bash
+pm2 start npm --name next-app -- start
+```
+
+Check running servers:
+
 ```bash
 pm2 ls
 ```
 
-### Step 6:
-Go to `sites-available` and create a file `<server_name>.conf`.  
-Example: `nano labmantra.conf`
+---
 
-Commands to create this file:
-1. `cd /etc/nginx`
-2. `cd ./sites-available`
-3. `nano <server_name>.conf` (Example: `nano labmantra.conf`)
+# Step 6: Configure Nginx
 
-What to add in this file:
+Go to nginx folder:
+
+```bash
+cd /etc/nginx
+cd sites-available
+```
+
+Create config file:
+
+```bash
+nano <server_name>.conf
+```
+
+Example
+
+```bash
+nano labmantra.conf
+```
+
+---
+
+## Add this configuration
 
 ```nginx
 server {
@@ -122,105 +226,165 @@ server {
     }
 }
 ```
-### Step 7:
-Create a `.conf` file in `sites-enabled` with the same name as the file created in `sites-available` .
 
-Commands to create this file:
-1. `cd ../sites-enabled`
-2. `ln -s ../sites-available/<server_name>.conf`.
-3. `sudo nginx -t` // configure and test 
+---
 
-### Step 8:
-Request for SSL certificate .
-Command : 
+# Step 7: Enable Nginx Config
+
 ```bash
-sudo certbot --nginx -d api.DOMAIN_NAME.com -d www.api. DOMAIN_NAME.com
+cd ../sites-enabled
+ln -s ../sites-available/<server_name>.conf
 ```
-Example : `sudo certbot --nginx -d api.labmantra.com -d www.api.labmantra.com`
 
-### Step 9:
-Restart the nginx 
+Test nginx config:
+
+```bash
+sudo nginx -t
+```
+
+---
+
+# Step 8: Request SSL Certificate
+
+```bash
+sudo certbot --nginx -d api.DOMAIN_NAME.com -d www.api.DOMAIN_NAME.com
+```
+
+Example
+
+```bash
+sudo certbot --nginx -d api.labmantra.com -d www.api.labmantra.com
+```
+
+---
+
+# Step 9: Restart Nginx
+
 ```bash
 sudo systemctl restart nginx
 ```
-### Congratulations 🥳 , Your Backend is live 
 
+---
 
-# Update Backend 
+# 🎉 Backend is Live
 
-### Step 1 :
-Update the code by git Repository.
+---
+
+# 🔄 Update Backend
+
+## Step 1: Pull Latest Code
+
 ```bash
 git pull
 ```
 
-### Step 2 : 
-Update the server by installing it.
+---
 
-### Step 3 : 
-Restart the pm2 server 
-```bash
-pm2 restart <List_Number>
-```
-### Step 4 :
-Restart the System
-```bash
-sudo systemctl restart nginx
-```
+## Step 2: Install Packages
 
-# Live FrontEnd on VPS 
-
-### Firstly, Please remember to add the root in domain DNS for `DOMAIN_NAME` and `www.DOMAIN_NAME`.
-
-### Step 1:
-Command: 
-```bash
-git clone <git repo Link>
-```
-Example: `git clone https://github.com/HARSH-VARDHAN-MISHRA/ABC.git`
-
-### Step 2:
-Go to server file folder and download the node modules.  
-Command: 
 ```bash
 pnpm install
 ```
 
-### Step 3:
-If .env then add it to the file. Add the `.env` file:
-- Command: `nano .env` (nano command is used to create a file)
-- Now add the file content then:
-  - `Ctrl + O`
-  - `Enter`
-  - `Ctrl + X` (To return back)
-- If you want to see the changes, then use the command: `cat <file_name>`
-- Reminder: Please  change the ENV file url 
+---
 
-### Step 4:
-Create build file 
-Command: 
+## Step 3: Restart PM2 Server
+
+```bash
+pm2 restart <list_number>
+```
+
+---
+
+## Step 4: Restart Nginx
+
+```bash
+sudo systemctl restart nginx
+```
+
+---
+
+# 🌐 Live Frontend on VPS
+
+### ⚠️ Add DNS Records
+
+```
+DOMAIN_NAME
+www.DOMAIN_NAME
+```
+
+---
+
+# Step 1: Clone Repository
+
+```bash
+git clone <git repo link>
+```
+
+Example
+
+```bash
+git clone https://github.com/HARSH-VARDHAN-MISHRA/ABC.git
+```
+
+---
+
+# Step 2: Install Dependencies
+
+```bash
+pnpm install
+```
+
+---
+
+# Step 3: Add `.env` File
+
+```bash
+nano .env
+```
+
+Check file
+
+```bash
+cat .env
+```
+
+⚠️ Update **API URL inside env**
+
+---
+
+# Step 4: Build Project
+
 ```bash
 npm run build
 ```
-###### if want to delete then Command : rm  -r file_name
 
-### Step 5:
-Go to `sites-available` and create a file `<server_name>.conf` file.  
-Example: `nano testfile.conf`
+Delete folder if needed
 
-Commands to create this file:
-1. `cd /etc/nginx`
-2. `cd ./sites-available`
-3. `nano <server_name>.conf` (Example: `nano testfile.conf`)
+```bash
+rm -r build
+```
 
-What to add in this file:
+---
+
+# Step 5: Configure Nginx
+
+```bash
+cd /etc/nginx
+cd sites-available
+nano <server_name>.conf
+```
+
+---
+
+## Nginx Config
 
 ```nginx
-server {	
+server {
     listen 80;
-        server_name www.DOMAIN_NAME.com DOMAIN_NAME.com;
+    server_name www.DOMAIN_NAME.com DOMAIN_NAME.com;
 
-    root /root/Test/build;  // Path of the file and if created by vite then ( build - dist )
+    root /root/Test/build;
 
     location / {
         try_files $uri $uri/ /index.html;
@@ -228,11 +392,12 @@ server {
 }
 ```
 
-### Example : 
-```bash
+Example
+
+```nginx
 server {
     listen 80;
-        server_name www.test.in test.in;
+    server_name www.test.in test.in;
 
     root /root/Test/build;
 
@@ -241,95 +406,137 @@ server {
     }
 }
 ```
-- Then run the command : 
+
+---
+
+# Step 6: Enable Config
+
 ```bash
-sudo nginx -t // for configure and test the file
+cd ../sites-enabled
+ln -s ../sites-available/<server_name>.conf
 ```
-### Step 6:
-Create a `.conf` file in `sites-enabled` with the same name as the file created in `sites-available` .
 
-Commands to create this file:
-1. `cd ../sites-enabled`
-2. `ln -s ../sites-available/<server_name>.conf`.
-3. `sudo nginx -t` // configure and test 
+Test config
 
-### Step 7:
-Request for SSL certificate .
-Command : 
+```bash
+sudo nginx -t
+```
+
+---
+
+# Step 7: Add SSL
+
 ```bash
 sudo certbot --nginx -d DOMAIN_NAME.com -d www.DOMAIN_NAME.com
 ```
-Example : `sudo certbot --nginx -d test.com -d www.test.com`
 
-### Step 8:
-Restart the nginx 
+Example
+
+```bash
+sudo certbot --nginx -d test.com -d www.test.com
+```
+
+---
+
+# Step 8: Restart Nginx
+
 ```bash
 sudo systemctl restart nginx
 ```
-### Congratulations 🥳 , Your Frontend is live 
 
+---
 
+# 🎉 Frontend is Live
 
-# Update FrontEnd
+---
 
-### Step 1 :
-Update the code by git Repository.
+# 🔄 Update Frontend
+
+## Step 1
+
 ```bash
 git pull
 ```
 
-### Step 2 : 
-Update the client by installing it.
-```nginx
+---
+
+## Step 2
+
+```bash
 npm install
 ```
-### Step 3 : 
-Delete the OLD build folder.
-```nginx
+
+---
+
+## Step 3
+
+Delete old build
+
+```bash
 rm -r build
 ```
-Now Create a new BUILD folder.
-```nginx
+
+Create new build
+
+```bash
 npm run build
 ```
-### Step 4 :
-Restart the System
+
+---
+
+## Step 4
+
+Restart nginx
+
 ```bash
 sudo systemctl restart nginx
 ```
 
+---
 
-```
-in nextjs
+# ⚡ Next.js with PM2
+
+Start Next.js server
+
+```bash
 pm2 start npm --name transpeed -- run start
+```
 
-if need to port add 
+Start with port
+
+```bash
 PORT=4000 pm2 start npm --name transpeed -- run start
+```
 
+Save pm2
 
-
+```bash
 pm2 save
 pm2 startup
 pm2 list
-
-
-in reactjs
-pm2 start app.js --name projectname
 ```
 
+---
 
+# 🔐 Open Firewall Port
+
+```bash
+sudo ufw allow <port>
 ```
-sudo ufw allow port
-````
 
-# Nextjs same like flow Live Backend
+---
 
-Server start before create main folder
-```
+# 📦 PM2 Ecosystem Setup
+
+Create config
+
+```bash
 nano ecosystem.config.js
 ```
 
-```
+Add config
+
+```javascript
 module.exports = {
   apps: [
     {
@@ -344,10 +551,18 @@ module.exports = {
   ],
 };
 ```
-than start your server ya fllow Live Backend on VPS step no 6
 
+Start with PM2
 
+```bash
+pm2 start ecosystem.config.js
 ```
+
+---
+
+# 🌍 Example Nginx Config (Next.js)
+
+```nginx
 server {
     listen 80;
     server_name drkm.admin.adsdigitalmedia.com www.drkm.admin.adsdigitalmedia.com;
@@ -362,42 +577,37 @@ server {
     }
 }
 ```
-//ecosystem.config.js
-```
-module.exports = {
-  apps: [
-    {
-      name: "dr-rajneesh",
-      script: "npm",
-      args: "start",
-      cwd: "/root/dr-rajneesh/client",
-      env: {
-        NODE_ENV: "production",
-      },
-    },
-  ],
-};
-```
-//download file
-```
-scp root@82.112.236.65:/root/dr.rkm/admin/.env C:\Users\shiva\Downloads\.env
-```
-```
-pm2 start npm --name "dr-rajneesh-admin" -- start  //next
-pm2 start server.js --name "dr-rajneesh-server" //react 
-pm2 save
-```
-```
+
+Reload nginx
+
+```bash
 sudo systemctl reload nginx
 ```
-```
-sudo certbot --nginx -d dyfru.com -d www.dyfru.com
-```
-```
+
+---
+
+# 🔑 Multiple Domain SSL Example
+
+```bash
 sudo certbot --nginx \
--d drkm.admin.adsdigitalmedia.com -d www.drkm.admin.adsdigitalmedia.com \
--d drkm.adsdigitalmedia.com -d www.drkm.adsdigitalmedia.com \
--d drkm.api.adsdigitalmedia.com -d www.drkm.api.adsdigitalmedia.com 
-
+-d drkm.admin.adsdigitalmedia.com \
+-d www.drkm.admin.adsdigitalmedia.com \
+-d drkm.adsdigitalmedia.com \
+-d www.drkm.adsdigitalmedia.com \
+-d drkm.api.adsdigitalmedia.com \
+-d www.drkm.api.adsdigitalmedia.com
 ```
 
+---
+
+# 📥 Download File From Server
+
+```bash
+scp root@82.112.236.65:/root/dr.rkm/admin/.env C:\Users\shiva\Downloads\.env
+```
+
+---
+
+# 🎉 Done
+
+Your **Backend + Frontend VPS Deployment Setup is Complete** 🚀
