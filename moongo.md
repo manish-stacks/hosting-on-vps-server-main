@@ -200,20 +200,6 @@ mongorestore --uri="MONGO_URL" --gzip ./dump
 
 ---
 
-# 📊 Backup Flow
-
-```
-MongoDB Database
-       ↓
-mongodump
-       ↓
-dump folder created
-       ↓
-Upload / Store Backup
-       ↓
-mongorestore
-       ↓
-Database Restored
 ```
 
 ---
