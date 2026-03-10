@@ -608,6 +608,438 @@ scp root@82.112.236.65:/root/dr.rkm/admin/.env C:\Users\shiva\Downloads\.env
 
 ---
 
-# 🎉 Done
+# 🔒 Advanced VPS Security & DevOps Setup
 
-Your **Backend + Frontend VPS Deployment Setup is Complete** 🚀
+This section adds **extra security, monitoring, CI/CD, Docker deployment, and load balancing** for production servers.
+
+---
+
+# 🛡 Install Fail2Ban (Brute Force Protection)
+
+Fail2Ban protects your server from **SSH brute-force attacks**.
+
+### Step 1: Install Fail2Ban
+
+```bash
+sudo apt install fail2ban
+```
+
+---
+
+### Step 2: Start and Enable Service
+
+```bash
+sudo systemctl start fail2ban
+sudo systemctl enable fail2ban
+```
+
+---
+
+### Step 3: Create Local Config
+
+```bash
+sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+```
+
+Edit file:
+
+```bash
+sudo nano /etc/fail2ban/jail.local
+```
+
+Example configuration:
+
+```ini
+[sshd]
+enabled = true
+port = ssh
+logpath = %(sshd_log)s
+maxretry = 5
+bantime = 3600
+```
+
+Restart Fail2Ban
+
+```bash
+sudo systemctl restart fail2ban
+```
+
+Check status
+
+```bash
+sudo fail2ban-client status
+```
+
+---
+
+# 🔁 Auto Deployment (CI/CD)
+
+Use **GitHub Actions** for automatic deployment.
+
+Whenever you push code → it **automatically deploys to VPS**.
+
+Create folder:
+
+```
+.github/workflows
+```
+
+Create file:
+
+```
+deploy.yml
+```
+
+---
+
+## GitHub Actions Deployment Script
+
+```yaml
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy using SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+          script: |
+            cd /root/projectname
+            git pull
+            pnpm install
+            pm2 restart all
+```
+
+---
+
+## Required GitHub Secrets
+
+Go to:
+
+```
+GitHub Repo → Settings → Secrets
+```
+
+Add:
+
+```
+SERVER_IP
+SSH_PRIVATE_KEY
+```
+
+---
+
+# 📊 Log Monitoring
+
+Monitor server logs to detect errors.
+
+---
+
+## PM2 Logs
+
+```bash
+pm2 logs
+```
+
+---
+
+## Nginx Logs
+
+Access logs
+
+```bash
+sudo tail -f /var/log/nginx/access.log
+```
+
+Error logs
+
+```bash
+sudo tail -f /var/log/nginx/error.log
+```
+
+---
+
+## System Logs
+
+```bash
+journalctl -u nginx
+```
+
+---
+
+# 🐳 Docker Deployment
+
+Docker allows running applications inside **isolated containers**.
+
+---
+
+## Step 1: Install Docker
+
+```bash
+sudo apt install docker.io
+```
+
+Start docker
+
+```bash
+sudo systemctl start docker
+sudo systemctl enable docker
+```
+
+Check version
+
+```bash
+docker -v
+```
+
+---
+
+## Step 2: Create Dockerfile
+
+```Dockerfile
+FROM node:18
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["npm","start"]
+```
+
+---
+
+## Step 3: Build Docker Image
+
+```bash
+docker build -t projectname .
+```
+
+---
+
+## Step 4: Run Docker Container
+
+```bash
+docker run -d -p 3000:3000 projectname
+```
+
+---
+
+# 📦 Docker Compose (Optional)
+
+Create file
+
+```bash
+nano docker-compose.yml
+```
+
+Example
+
+```yaml
+version: "3"
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+```
+
+Run
+
+```bash
+docker-compose up -d
+```
+
+---
+
+# ⚡ Load Balancing with Nginx
+
+Load balancing distributes traffic across **multiple backend servers**.
+
+Example setup with **2 servers**.
+
+---
+
+## Nginx Load Balancer Config
+
+```nginx
+upstream backend_servers {
+    server 127.0.0.1:3001;
+    server 127.0.0.1:3002;
+}
+
+server {
+    listen 80;
+    server_name api.domain.com;
+
+    location / {
+        proxy_pass http://backend_servers;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+Restart nginx
+
+```bash
+sudo systemctl restart nginx
+```
+
+---
+
+# 🔐 Advanced Security
+
+---
+
+## Disable Root SSH Login
+
+Edit ssh config
+
+```bash
+sudo nano /etc/ssh/sshd_config
+```
+
+Change
+
+```
+PermitRootLogin no
+```
+
+Restart ssh
+
+```bash
+sudo systemctl restart ssh
+```
+
+---
+
+## Change SSH Port
+
+Example change port from **22 → 2222**
+
+```
+Port 2222
+```
+
+Restart SSH
+
+```bash
+sudo systemctl restart ssh
+```
+
+Open port
+
+```bash
+sudo ufw allow 2222
+```
+
+---
+
+## Enable Firewall
+
+```bash
+sudo ufw enable
+```
+
+Allow necessary ports
+
+```bash
+sudo ufw allow 22
+sudo ufw allow 80
+sudo ufw allow 443
+```
+
+Check firewall status
+
+```bash
+sudo ufw status
+```
+
+---
+
+# 📈 PM2 Monitoring
+
+Monitor server performance.
+
+```bash
+pm2 monit
+```
+
+Save processes
+
+```bash
+pm2 save
+```
+
+Startup on reboot
+
+```bash
+pm2 startup
+```
+
+---
+
+# 🧹 Useful Maintenance Commands
+
+Clear logs
+
+```bash
+pm2 flush
+```
+
+Restart all apps
+
+```bash
+pm2 restart all
+```
+
+Delete app
+
+```bash
+pm2 delete appname
+```
+
+Check server usage
+
+```bash
+htop
+```
+
+---
+
+# 🎉 Production Server Ready
+
+Your VPS now supports:
+
+✅ Node Hosting  
+✅ Nginx Reverse Proxy  
+✅ SSL Security  
+✅ Fail2Ban Protection  
+✅ CI/CD Auto Deploy  
+✅ Docker Containers  
+✅ Log Monitoring  
+✅ Load Balancing  
+✅ Firewall Security  
+✅ PM2 Process Manager  
+
+🚀 **Your server is now production ready.**
