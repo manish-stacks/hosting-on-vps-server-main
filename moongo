@@ -1,2 +1,0 @@
-mongodump --uri="urlpaste" --out=./dump
-mongorestore  --uri="urlpaste" ./dump
