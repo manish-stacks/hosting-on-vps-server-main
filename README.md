@@ -608,6 +608,9 @@ scp root@82.112.236.65:/root/dr.rkm/admin/.env C:\Users\shiva\Downloads\.env
 
 ---
 
+
+
+
 # 🔒 Advanced VPS Security & DevOps Setup
 
 This section adds **extra security, monitoring, CI/CD, Docker deployment, and load balancing** for production servers.
@@ -977,27 +980,6 @@ sudo ufw status
 
 ---
 
-# 📈 PM2 Monitoring
-
-Monitor server performance.
-
-```bash
-pm2 monit
-```
-
-Save processes
-
-```bash
-pm2 save
-```
-
-Startup on reboot
-
-```bash
-pm2 startup
-```
-
----
 
 # 🧹 Useful Maintenance Commands
 
@@ -1027,19 +1009,3 @@ htop
 
 ---
 
-# 🎉 Production Server Ready
-
-Your VPS now supports:
-
-✅ Node Hosting  
-✅ Nginx Reverse Proxy  
-✅ SSL Security  
-✅ Fail2Ban Protection  
-✅ CI/CD Auto Deploy  
-✅ Docker Containers  
-✅ Log Monitoring  
-✅ Load Balancing  
-✅ Firewall Security  
-✅ PM2 Process Manager  
-
-🚀 **Your server is now production ready.**
