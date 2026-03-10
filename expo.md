@@ -380,16 +380,3 @@ Use eas update for OTA updates
 ```
 
 ---
-
-# 🎉 Done
-
-You now know how to:
-
-✅ Create Expo App  
-✅ Run on Mobile  
-✅ Build APK  
-✅ Build AAB  
-✅ Upload to Play Store  
-✅ Push OTA Updates  
-
-🚀 Your Expo app is ready for production.
