@@ -169,7 +169,7 @@ pm2 start server.js --name labmantra
 ### NestJS Example
 
 ```bash
-pm2 start dist/main.js --name nest-appointment
+pm2 start dist/src/main.js --name nest-appointment
 ```
 
 ### Next.js Example
