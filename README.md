@@ -103,7 +103,7 @@ git clone <git repo link>
 Example:
 
 ```bash
-git clone https://github.com/HARSH-VARDHAN-MISHRA/Laboratory.git
+git clone https://github.com/manish-stacks/abc.git
 ```
 
 ---
@@ -324,7 +324,7 @@ git clone <git repo link>
 Example
 
 ```bash
-git clone https://github.com/HARSH-VARDHAN-MISHRA/ABC.git
+git clone https://github.com/manish-stacks/abc.git
 ```
 
 ---
