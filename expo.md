@@ -1,3 +1,27 @@
+npx create-expo-app clientpulse-ap --template blank
+
+
+npx expo prebuild
+ ./gradlew clean  
+./gradlew assembleDebug  // testing apk
+./gradlew assembleRelease // real build apk
+./gradlew bundleRealse // abb format 
+
+adb install (path of apk )
+
+
+
+adb pair 192.168.1.26:44825
+adb connect 192.168.1.26:42481 
+adb devices
+
+adb -s 192.168.1.26:42481 install (apk path)
+if one device show than run (adb install)
+
+adb kill-server
+
+
+
 # 📱 Expo App Deployment Guide (Start → APK → Play Store → OTA Update)
 
 This guide explains the complete workflow for building and deploying a **React Native app using Expo**.
