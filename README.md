@@ -1008,4 +1008,4 @@ htop
 ```
 
 ---
-
+sudo ss -tulpn | grep 30  check runing port
